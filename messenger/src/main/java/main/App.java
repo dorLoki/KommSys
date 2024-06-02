@@ -2,9 +2,15 @@ package main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import main.connection.Connection;
+import main.controller.LoginController;
+import main.controller.MainController;
+import main.model.Chat;
+import main.view.ChatViewModel;
 
 import java.io.IOException;
 
@@ -13,26 +19,75 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    private static Scene scene;
+    private Stage primaryStage;
+
+    private Connection connection;
+
+    private ChatViewModel viewModel;
 
     @Override
-    public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage primaryStage) throws IOException {
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Nicht WhatsApp");
+        connection = new Connection(this);
+        viewModel = new ChatViewModel();
+        initRootLayout();
+
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+    public void stop() {
+        if (connection != null) {
+            connection.shutdown();
+        }
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+    public void initRootLayout() {
+        try {
+            // Load root layout from fxml file.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(App.class.getResource("login.fxml"));
+            GridPane rootLayout = (GridPane) loader.load();
+
+            // Show the scene containing the root layout.
+            Scene scene = new Scene(rootLayout);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            LoginController controller = loader.getController();
+            controller.init(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadMainView(String name) {
+        try {
+            // Load root layout from fxml file.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(App.class.getResource("main.fxml"));
+            BorderPane layout = (BorderPane) loader.load();
+
+            // Show the scene containing the root layout.
+            Scene scene = new Scene(layout);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            MainController controller = loader.getController();
+            controller.setApp(this);
+            controller.setChatViewModel(viewModel);
+            this.primaryStage.setTitle("Logged in as " +name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ChatViewModel getChatViewModel() {
+        return viewModel;
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 
     public static void main(String[] args) {
         launch();
     }
-
 }
