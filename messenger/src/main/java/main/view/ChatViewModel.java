@@ -18,6 +18,11 @@ public class ChatViewModel {
     }
 
     public void addChat(String name) {
+        for (Chat chat : chats) {
+            if (chat.nameProperty().get().equals(name)) {
+                return;
+            }
+        }
         chats.add(new Chat(name));
     }
 
@@ -30,9 +35,6 @@ public class ChatViewModel {
         }
         Chat chat = new Chat(name);
         chats.add(chat);
-
-        
-
         chat.addMessage(name, content, date);
     }
 }

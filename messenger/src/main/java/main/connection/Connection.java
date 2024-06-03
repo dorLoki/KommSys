@@ -1,4 +1,5 @@
 package main.connection;
+
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDate;
@@ -7,6 +8,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import main.App;
 
 public class Connection {
@@ -45,7 +48,7 @@ public class Connection {
 
                 state = ConnectionState.CONNECTED;
                 System.out.println("Connected to server");
-                
+
                 // Start a listener thread to handle incoming messages
                 new Thread(this::listenForMessages).start();
             } catch (Exception e) {
@@ -64,11 +67,11 @@ public class Connection {
                 if (message.equals("Authentication successful")) {
                     state = ConnectionState.LOGGED_IN;
                     Platform.runLater(() -> app.loadMainView(name));
-                } else{
+                } else {
                     processMessage(message);
                 }
             }
-        } catch (IOException e) { //TODO handle connection reset
+        } catch (IOException e) { // TODO handle connection reset
             e.printStackTrace();
         } finally {
             closeConnection();
@@ -78,6 +81,40 @@ public class Connection {
     private void processMessage(String message) {
         String[] parts = message.split(";");
         if (parts.length != 2) {
+            switch (message) {
+                case "Der Benutzer wurde nicht gefunden!":
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Benutzer wurde nicht gefunden!");
+                        alert.showAndWait();
+                    });
+                    break;
+                case "Invalid message format":
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Ungültiges Nachrichtenformat!");
+                        alert.showAndWait();
+                    });
+                    break;
+                case "Authentication failed":
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Anmeldung fehlgeschlagen!");
+                        alert.showAndWait();
+                    });
+                    break;
+                case "Nachricht konnte nicht gesendet werden. Der Benutzer ist offline!":
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Nachricht konnte nicht gesendet werden. Der Benutzer ist offline!");
+                        alert.showAndWait();
+                    });
+                    break;
+            }
             return;
         }
         String recipient = parts[0];

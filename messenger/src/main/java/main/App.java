@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import main.connection.Connection;
 import main.controller.LoginController;
 import main.controller.MainController;
-import main.model.Chat;
 import main.view.ChatViewModel;
 
 import java.io.IOException;
@@ -68,6 +67,7 @@ public class App extends Application {
 
             // Show the scene containing the root layout.
             Scene scene = new Scene(layout);
+            //scene.getStylesheets().add(App.class.getResource("style.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
             MainController controller = loader.getController();

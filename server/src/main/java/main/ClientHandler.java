@@ -11,7 +11,7 @@ import main.model.User;
 
 public class ClientHandler implements Runnable {
     private Socket socket;
-    public static ConcurrentHashMap<String, User> users;
+    private static ConcurrentHashMap<String, User> users;
     private User user;
 
     static {
@@ -81,10 +81,10 @@ public class ClientHandler implements Runnable {
         User recipientUser = users.get(recipient);
         if (recipientUser == null) {
             System.out.println("Recipient '" + recipient + "' was not found");
-            return "Recipient not found";
+            return "Der Benutzer wurde nicht gefunden!";
         }
         if (recipientUser.sendMessage(user.getUsername(), content)) {
-            return "Message could not be sent. User not online";
+            return "Nachricht konnte nicht gesendet werden. Der Benutzer ist offline!";
         }
         return "Message sent to " + recipient;
 

@@ -6,13 +6,14 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controller.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/13" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controller.MainController">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
          <tabs>
@@ -20,7 +21,7 @@
               <content>
                 <AnchorPane fx:id="anchorChats" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ButtonBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="32.0" prefWidth="365.0">
+                        <ButtonBar fx:id="buttonBar" nodeOrientation="RIGHT_TO_LEFT" prefHeight="32.0" prefWidth="365.0">
                           <buttons>
                             <Button fx:id="btnChatNew" mnemonicParsing="false" onAction="#newChat" text="Neuer Chat" />
                               <Button fx:id="btnChatGroup" mnemonicParsing="false" onAction="#showGroupChatOnly" text="Gruppen" />
@@ -28,7 +29,7 @@
                               <Button fx:id="btnChatAll" mnemonicParsing="false" onAction="#showAllChats" text="Alle" />
                           </buttons>
                         </ButtonBar>
-                        <ScrollPane layoutX="18.0" layoutY="47.0" prefHeight="464.0" prefWidth="341.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                        <ScrollPane layoutX="18.0" layoutY="47.0" prefHeight="517.0" prefWidth="380.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
                            <content>
                               <VBox fx:id="vBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefWidth="365.0" spacing="20.0">
                                  <padding>
@@ -37,6 +38,8 @@
                               </VBox>
                            </content>
                         </ScrollPane>
+                        <TextField fx:id="chatText" layoutX="14.0" layoutY="579.0" prefHeight="25.0" prefWidth="305.0" visible="false" />
+                        <Button fx:id="btnSend" layoutX="330.0" layoutY="579.0" mnemonicParsing="false" onMouseDragged="#handleSendButton" text="Senden" visible="false" />
                      </children>
                   </AnchorPane>
               </content>
