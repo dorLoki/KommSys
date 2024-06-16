@@ -70,7 +70,7 @@ public class App {
         client1.sendMessage("jan;Hey Jan!");
         Thread.sleep(1000);
 
-        //stop server
+        // stop server
         server.stop();
         Thread.sleep(1000);
         newLine();

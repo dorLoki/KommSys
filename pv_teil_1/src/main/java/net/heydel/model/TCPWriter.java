@@ -49,11 +49,11 @@ public class TCPWriter {
             }
             length >>= 7;
         }
-        
+
         System.arraycopy(messageBytes, 0, result, numLengthBytes, messageBytes.length); // Kopieren der Nachricht in das
                                                                                         // result-Array
         // array als bit representation
-        
+
         return result;
     }
 }
