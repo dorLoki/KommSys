@@ -42,8 +42,6 @@ public class App {
         client2.login();
         Thread.sleep(1000);
 
-
-
     }
 
     private static void out(String string) {

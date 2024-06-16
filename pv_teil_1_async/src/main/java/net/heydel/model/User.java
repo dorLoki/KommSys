@@ -3,9 +3,7 @@ package net.heydel.model;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class User {
     private final static ArrayList<User> users = new ArrayList<User>();

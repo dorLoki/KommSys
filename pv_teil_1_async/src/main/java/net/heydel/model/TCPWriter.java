@@ -5,11 +5,9 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class TCPWriter {
-    private Socket socket;
     private OutputStream outputStream;
 
     public TCPWriter(Socket socket) {
-        this.socket = socket;
         try {
             outputStream = socket.getOutputStream();
         } catch (Exception e) {
@@ -51,11 +49,11 @@ public class TCPWriter {
             }
             length >>= 7;
         }
-        
+
         System.arraycopy(messageBytes, 0, result, numLengthBytes, messageBytes.length); // Kopieren der Nachricht in das
                                                                                         // result-Array
         // array als bit representation
-        
+
         return result;
     }
 }

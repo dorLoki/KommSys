@@ -40,7 +40,7 @@ public class ClientHandler implements Runnable {
                 writer.write("Authentication successful");
             }
         }
-        //check stacked messages
+        // check stacked messages
         if (User.getMessages(user) != null) {
             for (String message : User.getMessages(user)) {
                 writer.write(message);

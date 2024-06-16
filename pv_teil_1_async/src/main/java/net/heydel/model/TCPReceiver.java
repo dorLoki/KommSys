@@ -18,9 +18,9 @@ public class TCPReceiver {
         }
     }
 
-    public String receiveMessage(){
+    public String receiveMessage() {
         int length = readMessageLength();
-        if(length == -1){
+        if (length == -1) {
             return null;
         }
         return readMessage(length);
@@ -29,9 +29,9 @@ public class TCPReceiver {
     private String readMessage(int length) {
         byte[] messageBytes = new byte[length];
         int actualLength = 0;
-        while(actualLength < length){
+        while (actualLength < length) {
             int read = readChunk(messageBytes, actualLength, length - actualLength);
-            if(read == -1){
+            if (read == -1) {
                 return null;
             }
             actualLength += read;
@@ -50,7 +50,7 @@ public class TCPReceiver {
 
     private int readMessageLength() {
         int length = 0;
-        byte b = (byte)0x80;
+        byte b = (byte) 0x80;
         do {
             try {
                 int i = inputStream.read();
