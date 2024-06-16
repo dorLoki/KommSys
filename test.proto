@@ -1,0 +1,26 @@
+syntax = "proto2";
+
+package pv_teil_2;
+
+
+message ChatMessage {
+  required string to = 1;
+  required string content = 2;
+}
+
+message LoginMessage {
+  required string username = 1;
+  required string password = 2;
+}
+
+message CodeMessage {
+  required int32 code = 1;
+}
+
+message MessageWrapper {
+  oneof message_type {
+    ChatMessage chat_message = 1;
+    LoginMessage login_message = 2;
+    CodeMessage code_message = 3;
+  }
+}
