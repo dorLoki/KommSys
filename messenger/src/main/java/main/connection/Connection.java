@@ -2,6 +2,7 @@ package main.connection;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -165,5 +166,50 @@ public class Connection {
         }
         executor.shutdownNow();
         closeConnection();
+    }
+
+    public byte[] stringToByteArray(String message) {
+        byte[] messageBytes = message.getBytes(StandardCharsets.UTF_8);
+        int length = messageBytes.length;
+
+        // Berechnen der Anzahl der Längen-Bytes
+        int numLengthBytes = 0;
+        while (length > 0) {
+            numLengthBytes++;
+            length >>= 7; // Verschieben um 7 Bit
+        }
+
+        byte[] result = new byte[numLengthBytes + messageBytes.length];
+        length = messageBytes.length;
+        for (int i = numLengthBytes - 1; i >= 0; i--) {
+            result[i] = (byte) (length & 0x7F); // Die unteren 7 Bit setzen
+            if (i < numLengthBytes - 1) {
+                result[i] |= 0x80; // Das höchste Bit setzen
+            }
+            length >>= 7;
+        }
+
+        System.arraycopy(messageBytes, 0, result, numLengthBytes, messageBytes.length);
+        return result;
+    }
+
+    public String byteArrayToString(byte[] bytes) {
+        int length = 0;
+        int shift = 0;
+        int index = 0;
+
+        while (index < bytes.length && (bytes[index] & 0x80) != 0) {
+            length |= (bytes[index] & 0x7F) << shift;
+            shift += 7;
+            index++;
+        }
+
+        if (index < bytes.length) {
+            length |= bytes[index++] << shift;
+        }
+
+        byte[] messageBytes = new byte[bytes.length - index];
+        System.arraycopy(bytes, index, messageBytes, 0, messageBytes.length);
+        return new String(messageBytes, StandardCharsets.UTF_8);
     }
 }
