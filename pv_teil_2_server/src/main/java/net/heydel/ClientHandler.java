@@ -2,6 +2,7 @@ package net.heydel;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.heydel.model.CodeMessageCreater;
@@ -58,9 +59,11 @@ public class ClientHandler implements Runnable {
     }
 
     private void loadMessages() throws IOException {
-        if (User.getMessages(user) != null) {
-            for (ChatMessage chatMessage : User.getMessages(user)) {
-                processClientMessage(chatMessage);
+        List<ChatMessage> messages = User.getMessages(user);
+        if (messages != null) {
+            for (ChatMessage chatMessage : messages) {
+                ChatMessage chatMessageResponse = ChatMessage.newBuilder().setTo(chatMessage.getTo()).setContent(chatMessage.getContent()).build();
+                MessageWrapper.newBuilder().setChatMessage(chatMessageResponse).build().writeDelimitedTo(socket.getOutputStream());
             }
         }
     }
