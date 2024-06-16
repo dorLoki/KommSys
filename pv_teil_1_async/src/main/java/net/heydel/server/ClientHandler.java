@@ -1,6 +1,7 @@
 package net.heydel.server;
 
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.heydel.model.TCPReceiver;
@@ -41,8 +42,9 @@ public class ClientHandler implements Runnable {
             }
         }
         // check stacked messages
-        if (User.getMessages(user) != null) {
-            for (String message : User.getMessages(user)) {
+        List<String> messages = User.getMessages(user);
+        if (messages != null) {
+            for (String message : messages) {
                 writer.write(message);
             }
         }
