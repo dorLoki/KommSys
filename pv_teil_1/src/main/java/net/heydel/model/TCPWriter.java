@@ -5,11 +5,9 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class TCPWriter {
-    private Socket socket;
     private OutputStream outputStream;
 
     public TCPWriter(Socket socket) {
-        this.socket = socket;
         try {
             outputStream = socket.getOutputStream();
         } catch (Exception e) {
