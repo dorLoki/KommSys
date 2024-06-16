@@ -3,13 +3,13 @@ package net.heydel.model;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
+
+import net.heydel.protobuf.ChatMessage;
 
 public class User {
     private final static ArrayList<User> users = new ArrayList<User>();
-    private final static ConcurrentHashMap<User, List<String>> messages = new ConcurrentHashMap<User, List<String>>();
+    private final static ConcurrentHashMap<User, List<ChatMessage>> messages = new ConcurrentHashMap<User, List<ChatMessage>>();
     static {
         users.add(new User("luke", "1234"));
         users.add(new User("toni", "5678"));
@@ -45,6 +45,7 @@ public class User {
         }
         return null;
     }
+
     public String getLogin() {
         return login;
     }
@@ -54,15 +55,15 @@ public class User {
     }
 
     public static void addMessage(User user, String message) {
-        List<String> userMessages = messages.get(user);
+        List<ChatMessage> userMessages = messages.get(user);
         if (userMessages == null) {
-            userMessages = new LinkedList<String>();
+            userMessages = new LinkedList<ChatMessage>();
             messages.put(user, userMessages);
         }
-        userMessages.add(message);
+        userMessages.add(ChatMessage.newBuilder().setTo(user.getLogin()).setContent(message).build());
     }
 
-    public static List<String> getMessages(User user) {
+    public static List<ChatMessage> getMessages(User user) {
         return messages.remove(user);
     }
 }
